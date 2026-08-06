@@ -1,0 +1,59 @@
+# ============================================================
+# NexBank — Root .gitignore
+# ============================================================
+
+# ─── Environment / Secrets ──────────────────────────────────
+.env
+.env.*
+!.env.example
+*.env
+
+# ─── Backend (Java / Maven) ─────────────────────────────────
+backend/target/
+backend/.mvn/wrapper/maven-wrapper.jar
+backend/.classpath
+backend/.project
+backend/.settings/
+backend/*.class
+backend/*.jar
+backend/*.war
+backend/*.ear
+backend/hs_err_pid*
+backend/.idea/
+backend/*.iml
+backend/*.ipr
+backend/*.iws
+
+# ─── Frontend (Node / Vite) ─────────────────────────────────
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+frontend/build/
+frontend/.DS_Store
+frontend/.eslintcache
+
+# ─── OS ─────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ─── Logs ───────────────────────────────────────────────────
+*.log
+logs/
+
+# ─── Docker ─────────────────────────────────────────────────
+# Don't ignore docker-compose.yml — it's safe (no secrets embedded)
+
+# ─── IDE ────────────────────────────────────────────────────
+.idea/
+*.iml
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# ─── Storage ─────────────────────────────────────────────────
+uploads/
+kyc-docs/
