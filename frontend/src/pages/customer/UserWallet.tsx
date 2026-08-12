@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import type { AppDispatch, RootState } from '../../store/store';
 import { fetchWalletBalance, fetchTransactions } from '../../features/wallet/walletSlice';
-import { CreditCard, ArrowUpRight, ArrowDownLeft, Plus, Send, Activity, ShieldCheck, Zap } from 'lucide-react';
+import { CreditCard, ArrowUpRight, ArrowDownLeft, Plus, Send, Activity, ShieldCheck, Zap ,AlertCircle} from 'lucide-react';
 import api from '../../api/api';
 
 const UserWallet = () => {

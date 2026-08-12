@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { Building2, Users, ShieldCheck, ArrowRight } from 'lucide-react';
-import type { RootState } from '../../store/store';
+import type { RootState } from '../store/store';
 
 const Landing = () => {
   const { token, user } = useSelector((state: RootState) => state.auth);
