@@ -3,6 +3,17 @@ spring:
     url: ${DB_URL}
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
+
+    hikari:
+      leak-detection-threshold: 2000
+      maximum-pool-size: 5
+      minimum-idle: 1
+      idle-timeout: 300000        # 10 sec
+      max-lifetime: 600000        # 30 sec (VERY IMPORTANT)
+      connection-timeout: 30000
+      keepalive-time: 30000
+      connection-test-query: SELECT 1
+
   jpa:
     hibernate:
       ddl-auto: validate
