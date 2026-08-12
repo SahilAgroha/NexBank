@@ -1,0 +1,43 @@
+spring:
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: false
+  mail:
+    username: ${SMTP_USERNAME}
+    password: ${SMTP_PASSWORD}
+  razorpay:
+    key:
+      id: ${RAZORPAY_KEY_ID}
+      secret: ${RAZORPAY_KEY_SECRET}
+
+app:
+  jwt:
+    secret: ${JWT_SECRET}
+
+cloudinary:
+  cloud-name: ${CLOUDINARY_CLOUD_NAME}
+  api-key: ${CLOUDINARY_API_KEY}
+  api-secret: ${CLOUDINARY_API_SECRET}
+
+cors:
+  allowed:
+    origins: ${FRONTEND_URL}
+
+marketing:
+  twilio:
+    account-sid: ${TWILIO_ACCOUNT_SID:}
+    auth-token: ${TWILIO_AUTH_TOKEN:}
+    from-number: ${TWILIO_FROM_NUMBER:}
+  msg91:
+    auth-key: ${MSG91_AUTH_KEY:}
+    sender-id: ${MSG91_SENDER_ID:}
+  sendgrid:
+    api-key: ${SENDGRID_API_KEY:}

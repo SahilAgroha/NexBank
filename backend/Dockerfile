@@ -1,25 +1,23 @@
-# ─── Build Stage ─────────────────────────────────────────────
-FROM maven:3.9.6-eclipse-temurin-21-alpine AS builder
+# Build stage
+FROM maven:3.9.6-eclipse-temurin-21 AS build
 WORKDIR /app
-COPY pom.xml .
-# Download dependencies (cached layer)
-RUN mvn dependency:go-offline -B
-COPY src ./src
-RUN mvn clean package -DskipTests -B
 
-# ─── Runtime Stage ───────────────────────────────────────────
+# Copy the pom.xml and source code
+COPY pom.xml .
+COPY src ./src
+
+# Build the application, skipping tests to speed up the build
+RUN mvn clean package -DskipTests
+
+# Run stage
 FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
 
-# Create non-root user
-RUN addgroup -S nexbank && adduser -S nexbank -G nexbank
-USER nexbank
+# Copy the built jar from the build stage
+COPY --from=build /app/target/*.jar app.jar
 
-COPY --from=builder /app/target/*.jar app.jar
-
+# Expose the port (Render assigns a PORT environment variable dynamically, but typically we expose 8080)
 EXPOSE 8080
 
-ENTRYPOINT ["java", \
-  "-XX:+UseContainerSupport", \
-  "-XX:MaxRAMPercentage=75.0", \
-  "-jar", "app.jar"]
+# Command to run the application
+ENTRYPOINT ["java", "-jar", "app.jar"]
