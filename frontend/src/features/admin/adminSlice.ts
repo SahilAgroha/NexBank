@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
+import api from '../../api/api';
 
 export interface DailyTransactionCount {
     date: string;
@@ -189,7 +189,7 @@ const initialState: AdminState = {
 export const fetchDashboardStats = createAsyncThunk('admin/fetchDashboardStats', async (params: { startDate?: string, endDate?: string } | undefined, { rejectWithValue }) => {
     try {
         const token = localStorage.getItem('token');
-        const response = await axios.get('http://localhost:8080/api/admin/dashboard/stats', {
+        const response = await api.get('/admin/dashboard/stats', {
             params,
             headers: { Authorization: `Bearer ${token}` }
         });
@@ -202,7 +202,7 @@ export const fetchDashboardStats = createAsyncThunk('admin/fetchDashboardStats',
 export const fetchAdminUsers = createAsyncThunk('admin/fetchAdminUsers', async (params: { page: number; size: number }, { rejectWithValue }) => {
     try {
         const token = localStorage.getItem('token');
-        const response = await axios.get('http://localhost:8080/api/admin/users', {
+        const response = await api.get('/admin/users', {
             params,
             headers: { Authorization: `Bearer ${token}` }
         });
@@ -215,7 +215,7 @@ export const fetchAdminUsers = createAsyncThunk('admin/fetchAdminUsers', async (
 export const fetchAdminPartners = createAsyncThunk('admin/fetchAdminPartners', async (params: { page: number; size: number }, { rejectWithValue }) => {
     try {
         const token = localStorage.getItem('token');
-        const response = await axios.get('http://localhost:8080/api/admin/partners', {
+        const response = await api.get('/admin/partners', {
             params,
             headers: { Authorization: `Bearer ${token}` }
         });
@@ -228,7 +228,7 @@ export const fetchAdminPartners = createAsyncThunk('admin/fetchAdminPartners', a
 export const fetchHierarchyTree = createAsyncThunk('admin/fetchHierarchyTree', async (_, { rejectWithValue }) => {
     try {
         const token = localStorage.getItem('token');
-        const response = await axios.get('http://localhost:8080/api/admin/hierarchy', {
+        const response = await api.get('/admin/hierarchy', {
             headers: { Authorization: `Bearer ${token}` }
         });
         return response.data.data;
@@ -240,7 +240,7 @@ export const fetchHierarchyTree = createAsyncThunk('admin/fetchHierarchyTree', a
 export const toggleUserStatus = createAsyncThunk('admin/toggleUserStatus', async ({ id, active, type }: { id: number, active: boolean, type: 'USER' | 'PARTNER' }, { rejectWithValue, dispatch }) => {
     try {
         const token = localStorage.getItem('token');
-        await axios.put(`http://localhost:8080/api/admin/users/${id}/status?active=${active}`, {}, {
+        await api.put(`/admin/users/${id}/status?active=${active}`, {}, {
             headers: { Authorization: `Bearer ${token}` }
         });
         return { id, active, type };
@@ -252,7 +252,7 @@ export const toggleUserStatus = createAsyncThunk('admin/toggleUserStatus', async
 export const createAdminPartner = createAsyncThunk('admin/createAdminPartner', async (partnerData: any, { rejectWithValue, dispatch }) => {
     try {
         const token = localStorage.getItem('token');
-        await axios.post('http://localhost:8080/api/admin/partners', partnerData, {
+        await api.post('/admin/partners', partnerData, {
             headers: { Authorization: `Bearer ${token}` }
         });
         // Refetch partners after creation
@@ -266,7 +266,7 @@ export const createAdminPartner = createAsyncThunk('admin/createAdminPartner', a
 export const fetchAdminWallets = createAsyncThunk('admin/fetchAdminWallets', async (params: { page: number; size: number }, { rejectWithValue }) => {
     try {
         const token = localStorage.getItem('token');
-        const response = await axios.get('http://localhost:8080/api/admin/wallets', {
+        const response = await api.get('/admin/wallets', {
             params,
             headers: { Authorization: `Bearer ${token}` }
         });
@@ -279,7 +279,7 @@ export const fetchAdminWallets = createAsyncThunk('admin/fetchAdminWallets', asy
 export const fetchAdminTransactions = createAsyncThunk('admin/fetchTransactions', async (params: { page: number, size: number, startDate?: string, endDate?: string, status?: string, type?: string, search?: string }, { rejectWithValue }) => {
     try {
         const token = localStorage.getItem('token');
-        const response = await axios.get('http://localhost:8080/api/admin/transactions', {
+        const response = await api.get('/admin/transactions', {
             params,
             headers: { Authorization: `Bearer ${token}` }
         });
@@ -292,7 +292,7 @@ export const fetchAdminTransactions = createAsyncThunk('admin/fetchTransactions'
 export const approveTransaction = createAsyncThunk('admin/approveTransaction', async (id: number, { rejectWithValue }) => {
     try {
         const token = localStorage.getItem('token');
-        await axios.post(`http://localhost:8080/api/admin/transactions/${id}/approve`, {}, {
+        await api.post(`/admin/transactions/${id}/approve`, {}, {
             headers: { Authorization: `Bearer ${token}` }
         });
         return id;
@@ -305,7 +305,7 @@ export const approveTransaction = createAsyncThunk('admin/approveTransaction', a
 export const fetchSystemLedger = createAsyncThunk('admin/fetchSystemLedger', async (params: { startDate?: string, endDate?: string }, { rejectWithValue }) => {
     try {
         const token = localStorage.getItem('token');
-        const response = await axios.get('http://localhost:8080/api/admin/finance/system-ledger', {
+        const response = await api.get('/admin/finance/system-ledger', {
             params,
             headers: { Authorization: `Bearer ${token}` }
         });
@@ -318,7 +318,7 @@ export const fetchSystemLedger = createAsyncThunk('admin/fetchSystemLedger', asy
 export const fetchPartnerLedger = createAsyncThunk('admin/fetchPartnerLedger', async ({ partnerId, startDate, endDate }: { partnerId: number, startDate?: string, endDate?: string }, { rejectWithValue }) => {
     try {
         const token = localStorage.getItem('token');
-        const response = await axios.get(`http://localhost:8080/api/admin/finance/partner-ledger/${partnerId}`, {
+        const response = await api.get(`/admin/finance/partner-ledger/${partnerId}`, {
             params: { startDate, endDate },
             headers: { Authorization: `Bearer ${token}` }
         });
@@ -331,7 +331,7 @@ export const fetchPartnerLedger = createAsyncThunk('admin/fetchPartnerLedger', a
 export const fetchRechargeRequests = createAsyncThunk('admin/fetchRechargeRequests', async (_, { rejectWithValue }) => {
     try {
         const token = localStorage.getItem('token');
-        const response = await axios.get('http://localhost:8080/api/admin/wallets/recharge-requests', {
+        const response = await api.get('/admin/wallets/recharge-requests', {
             headers: { Authorization: `Bearer ${token}` }
         });
         return response.data.data;
@@ -343,7 +343,7 @@ export const fetchRechargeRequests = createAsyncThunk('admin/fetchRechargeReques
 export const approveRechargeRequest = createAsyncThunk('admin/approveRechargeRequest', async (data: { id: number, remarks: string }, { rejectWithValue }) => {
     try {
         const token = localStorage.getItem('token');
-        await axios.post(`http://localhost:8080/api/admin/wallets/recharge-requests/${data.id}/approve`, null, {
+        await api.post(`/admin/wallets/recharge-requests/${data.id}/approve`, null, {
             params: { remarks: data.remarks },
             headers: { Authorization: `Bearer ${token}` }
         });
@@ -356,7 +356,7 @@ export const approveRechargeRequest = createAsyncThunk('admin/approveRechargeReq
 export const rejectRechargeRequest = createAsyncThunk('admin/rejectRechargeRequest', async (data: { id: number, remarks: string }, { rejectWithValue }) => {
     try {
         const token = localStorage.getItem('token');
-        await axios.post(`http://localhost:8080/api/admin/wallets/recharge-requests/${data.id}/reject`, null, {
+        await api.post(`/admin/wallets/recharge-requests/${data.id}/reject`, null, {
             params: { remarks: data.remarks },
             headers: { Authorization: `Bearer ${token}` }
         });
@@ -369,7 +369,7 @@ export const rejectRechargeRequest = createAsyncThunk('admin/rejectRechargeReque
 export const adjustWalletBalance = createAsyncThunk('admin/adjustWalletBalance', async (data: { walletId: number, amount: number, type: 'CREDIT' | 'DEBIT', remark: string }, { rejectWithValue }) => {
     try {
         const token = localStorage.getItem('token');
-        await axios.post(`http://localhost:8080/api/admin/wallets/${data.walletId}/adjust`, {
+        await api.post(`/admin/wallets/${data.walletId}/adjust`, {
             amount: data.amount,
             type: data.type,
             remark: data.remark
@@ -385,7 +385,7 @@ export const adjustWalletBalance = createAsyncThunk('admin/adjustWalletBalance',
 export const fetchUserDetails = createAsyncThunk('admin/fetchUserDetails', async (userId: number, { rejectWithValue }) => {
     try {
         const token = localStorage.getItem('token');
-        const response = await axios.get(`http://localhost:8080/api/admin/users/${userId}/details`, {
+        const response = await api.get(`/admin/users/${userId}/details`, {
             headers: { Authorization: `Bearer ${token}` }
         });
         return response.data;
@@ -397,7 +397,7 @@ export const fetchUserDetails = createAsyncThunk('admin/fetchUserDetails', async
 export const updateUserProfile = createAsyncThunk('admin/updateUserProfile', async (data: { userId: number, profileData: any }, { rejectWithValue, dispatch }) => {
     try {
         const token = localStorage.getItem('token');
-        await axios.put(`http://localhost:8080/api/admin/users/${data.userId}/profile`, data.profileData, {
+        await api.put(`/admin/users/${data.userId}/profile`, data.profileData, {
             headers: { Authorization: `Bearer ${token}` }
         });
         dispatch(fetchUserDetails(data.userId));
@@ -410,7 +410,7 @@ export const updateUserProfile = createAsyncThunk('admin/updateUserProfile', asy
 export const updateUserFinance = createAsyncThunk('admin/updateUserFinance', async (data: { userId: number, financeData: any }, { rejectWithValue, dispatch }) => {
     try {
         const token = localStorage.getItem('token');
-        await axios.put(`http://localhost:8080/api/admin/users/${data.userId}/finance`, data.financeData, {
+        await api.put(`/admin/users/${data.userId}/finance`, data.financeData, {
             headers: { Authorization: `Bearer ${token}` }
         });
         dispatch(fetchUserDetails(data.userId));
@@ -423,7 +423,7 @@ export const updateUserFinance = createAsyncThunk('admin/updateUserFinance', asy
 export const updateUserService = createAsyncThunk('admin/updateUserService', async (data: { userId: number, serviceData: any }, { rejectWithValue, dispatch }) => {
     try {
         const token = localStorage.getItem('token');
-        await axios.put(`http://localhost:8080/api/admin/users/${data.userId}/services`, data.serviceData, {
+        await api.put(`/admin/users/${data.userId}/services`, data.serviceData, {
             headers: { Authorization: `Bearer ${token}` }
         });
         dispatch(fetchUserDetails(data.userId));
@@ -436,7 +436,7 @@ export const updateUserService = createAsyncThunk('admin/updateUserService', asy
 export const updateUserCommission = createAsyncThunk('admin/updateUserCommission', async (data: { userId: number, commissionData: any }, { rejectWithValue, dispatch }) => {
     try {
         const token = localStorage.getItem('token');
-        await axios.put(`http://localhost:8080/api/admin/users/${data.userId}/commissions`, data.commissionData, {
+        await api.put(`/admin/users/${data.userId}/commissions`, data.commissionData, {
             headers: { Authorization: `Bearer ${token}` }
         });
         dispatch(fetchUserDetails(data.userId));
