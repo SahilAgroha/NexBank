@@ -43,12 +43,15 @@ public class AdminDashboardService {
 
         // Purchase Data
         BigDecimal totalPurchased = transactionRepository.sumAmountByTypeAndDateRange(TransactionType.SERVICE_PAYMENT, start, end);
+        if (totalPurchased == null) totalPurchased = BigDecimal.ZERO;
         
         // Customer Wallets
         BigDecimal totalCustomerWalletBalance = walletRepository.getTotalBalanceByRole(Role.USER);
+        if (totalCustomerWalletBalance == null) totalCustomerWalletBalance = BigDecimal.ZERO;
         
         // Commissions
         BigDecimal commissionOut = transactionRepository.sumAmountByTypeAndDateRange(TransactionType.COMMISSION, start, end);
+        if (commissionOut == null) commissionOut = BigDecimal.ZERO;
         
         // Calculate Commission IN (Mocked as 2.5% of total purchases for demonstration, since we don't track vendor margins)
         BigDecimal commissionIn = totalPurchased.multiply(new BigDecimal("0.025")).setScale(2, RoundingMode.HALF_UP);
