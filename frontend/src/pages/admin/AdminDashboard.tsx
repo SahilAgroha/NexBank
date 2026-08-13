@@ -26,7 +26,10 @@ const AdminDashboard = () => {
   });
 
   const handleFilter = () => {
-    dispatch(fetchDashboardStats({ startDate, endDate }));
+    dispatch(fetchDashboardStats({ 
+      startDate: startDate || undefined, 
+      endDate: endDate || undefined 
+    }));
   };
 
   useEffect(() => {
